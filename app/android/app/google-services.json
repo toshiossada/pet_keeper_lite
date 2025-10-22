@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "672907438215",
+    "project_id": "esquestrolabs",
+    "storage_bucket": "esquestrolabs.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:672907438215:android:adb3d2ff610fde4a213022",
+        "android_client_info": {
+          "package_name": "com.petkeeperlit.petkeeperlite"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA6qPrtGL95dDU9UCcdWShWNGfWnHwikvE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
