@@ -1,0 +1,67 @@
+Objetivo: Desenvolver uma Cloud Function invocável (httpsCallable) para enviar uma notificação push via Firebase Cloud Messaging (FCM) a todos os usuários de uma família associada a um pet.
+
+Nome da Função: notifyFamily
+
+Tecnologias: Node.js (TypeScript/JavaScript), Firebase Admin SDK.
+
+1. Estrutura da Requisição (Input)
+
+A função será chamada com o seguinte objeto de dados:
+
+data: { petId: string, message: string }
+
+petId: ID do documento na coleção pets.
+
+message: O conteúdo textual da notificação a ser enviado.
+
+2. Fluxo de Execução (Passos Lógicos)
+
+Validação: Verificar se petId e message foram fornecidos.
+
+Consulta ao Pet:
+
+Acessar a coleção pets.
+
+Recuperar o documento com o ID igual a petId.
+
+Extrair o campo familyCode.
+
+Consulta aos Usuários:
+
+Acessar a coleção users.
+
+Consultar todos os documentos onde o campo familyCode seja igual ao código encontrado na etapa anterior.
+
+Coleta de Tokens:
+
+Iterar sobre os documentos de usuários retornados.
+
+Coletar todos os tokens de notificação contidos no campo fcmTokens (que as imagens indicam ser um Array de Strings). É importante achatar essa lista (garantir que seja uma única lista de todos os tokens únicos).
+
+Envio FCM:
+
+Montar o payload da notificação (deve conter a message no corpo da notificação).
+
+Utilizar admin.messaging().sendMulticast() (ou similar) para enviar a notificação a todos os tokens coletados em uma única chamada.
+
+3. Estruturas de Dados (Confirmadas pelas Imagens)
+
+pets/{petId}: Contém o campo familyCode (string).
+
+users/{userId}: Contém o campo familyCode (string) e o campo fcmTokens (Array<string>).
+
+4. Saída (Output) e Tratamento de Erros
+
+Sucesso: Retornar um objeto JSON com o status de sucesso e a contagem de tokens processados:
+
+{ success: true, message: 'Notificações enviadas com sucesso.', totalTokens: N }
+
+Falha: Implementar try...catch para:
+
+Erros de permissão ou autenticação.
+
+Pet não encontrado (petId inválido).
+
+Nenhum token de usuário encontrado para o familyCode.
+
+Retornar um objeto de erro para o cliente (functions.https.HttpsError).
