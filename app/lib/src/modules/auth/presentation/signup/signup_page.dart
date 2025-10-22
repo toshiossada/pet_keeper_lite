@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../shared/validators/email_validator.dart';
 import 'controllers/signup_controller.dart';
 import 'stores/signup_state.dart';
 
@@ -92,8 +93,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       controller: _emailCtrl,
                       keyboardType: TextInputType.emailAddress,
                       decoration: const InputDecoration(labelText: 'Email'),
-                      validator: (v) =>
-                          (v == null || v.isEmpty) ? 'Informe o email' : null,
+                      validator: validateEmail,
                     ),
                     TextFormField(
                       controller: _passCtrl,
