@@ -75,20 +75,6 @@ class _LoginPageState extends State<LoginPage> {
                       );
                     }
 
-                    if (state is AuthSuccess) {
-                      return const Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(
-                            Icons.check_circle,
-                            color: Colors.green,
-                            size: 48,
-                          ),
-                          SizedBox(height: 8),
-                          Text('Login realizado com sucesso'),
-                        ],
-                      );
-                    }
                     return _LoginForm(
                       formKey: _formKey,
                       emailCtrl: _emailCtrl,
@@ -151,7 +137,7 @@ class _LoginForm extends StatelessWidget {
           icon: const Icon(Icons.login, size: 20, color: Colors.red),
           label: const Text('Sign Up'),
           onPressed: () {
-            Modular.to.pushNamed('/signup');
+            Modular.to.pushNamed('/auth/signup');
           },
         ),
       ],

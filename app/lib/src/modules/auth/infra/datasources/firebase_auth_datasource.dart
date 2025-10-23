@@ -49,10 +49,17 @@ class FirebaseAuthDataSource implements AuthDataSource {
       accessToken: googleAuth.accessToken,
       idToken: googleAuth.idToken,
     );
-
     final userCred = await _auth.signInWithCredential(credential);
-    final user = userCred.user!;
-    final docRef = FirebaseFirestore.instance.collection('users').doc(user.uid);
+
+    final user = userCred.user;
+
+    final docRef = FirebaseFirestore.instance
+        .collection('users')
+        .doc(user!.uid);
+    final doc = await docRef.get();
+    if (!doc.exists) {
+      return AuthUserModel.fromJson({'email': user.email ?? ''});
+    }
 
     final token = await FirebaseMessaging.instance.getToken();
     if (token != null && token.isNotEmpty) {
@@ -61,6 +68,7 @@ class FirebaseAuthDataSource implements AuthDataSource {
       }, SetOptions(merge: true));
     }
 
+    // Read the latest user document (may have been updated above)
     final updated = await docRef.get();
     final data = Map<String, dynamic>.from(updated.data() ?? {});
     data['id'] = user.uid;
@@ -69,10 +77,38 @@ class FirebaseAuthDataSource implements AuthDataSource {
   }
 
   @override
+  Future<Map<String, dynamic>?> emailExists(String email) async {
+    final q = await FirebaseFirestore.instance
+        .collection('users')
+        .where('email', isEqualTo: email)
+        .limit(1)
+        .get();
+    return q.docs.firstOrNull?.data();
+  }
+
+  @override
   Future<AuthUserModel> signUp(
     AuthUserModel user,
     String password,
   ) async {
+    // If there is already a signed-in user (e.g. via Google Sign-In), do not
+    // create a new Auth user. Instead, create the Firestore document for the
+    // currently signed-in user's uid and return the model.
+    final current = _auth.currentUser;
+    if (current != null) {
+      final userDoc = user.toJson();
+      final docRef = FirebaseFirestore.instance
+          .collection('users')
+          .doc(current.uid);
+      await docRef.set(userDoc);
+
+      final returned = Map<String, dynamic>.from(userDoc);
+      returned['id'] = current.uid;
+      returned['email'] = user.email;
+      return AuthUserModel.fromJson(returned);
+    }
+
+    // No current user — create a new Auth user with email/password.
     final cred = await _auth.createUserWithEmailAndPassword(
       email: user.email,
       password: password,

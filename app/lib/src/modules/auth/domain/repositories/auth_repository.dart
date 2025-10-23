@@ -1,4 +1,4 @@
-import '../entities/user_entity.dart';
+import '../../../core/domain/entitites/user_entity.dart';
 
 abstract class AuthRepository {
   Future<UserEntity> signInWithEmail(String email, String password);

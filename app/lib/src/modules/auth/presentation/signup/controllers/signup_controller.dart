@@ -1,4 +1,4 @@
-import '../../../domain/entities/user_entity.dart';
+import '../../../../core/domain/entitites/user_entity.dart';
 import '../../../domain/repositories/auth_repository.dart';
 import '../stores/signup_state.dart';
 import '../stores/signup_store.dart';
@@ -17,6 +17,7 @@ class SignUpController {
   }) async {
     try {
       store.state = SignUpLoading();
+
 
       final userEntity = await repository.signUp(
         UserEntity(

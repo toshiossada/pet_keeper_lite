@@ -1,4 +1,4 @@
-import '../../domain/entities/user_entity.dart';
+import '../../../core/domain/entitites/user_entity.dart';
 import '../../domain/repositories/auth_repository.dart';
 import '../models/auth_user_model.dart';
 import 'datasources/auth_datasource.dart';
@@ -37,6 +37,7 @@ class AuthRepositoryImpl implements AuthRepository {
     final model = await datasource.signUp(modelArg, password);
     return model.toEntity();
   }
+
 
   @override
   Future<void> signOut() async => datasource.signOut();

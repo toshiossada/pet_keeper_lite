@@ -1,5 +1,7 @@
 import 'package:flutter_modular/flutter_modular.dart';
 
+import '../core/core_module.dart';
+import '../core/domain/entitites/user_entity.dart';
 import 'domain/repositories/auth_repository.dart';
 import 'domain/usecases/sign_in_with_email.dart';
 import 'domain/usecases/sign_in_with_google.dart';
@@ -14,6 +16,9 @@ import 'presentation/signup/signup_page.dart';
 import 'presentation/signup/stores/signup_store.dart';
 
 class AuthModule extends Module {
+  @override
+  List<Module> get imports => [CoreModule()];
+
   @override
   void binds(Injector i) {
     i.add<AuthRepository>(AuthRepositoryImpl.new);
@@ -35,8 +40,13 @@ class AuthModule extends Module {
       child: (_) => LoginPage(controller: Modular.get<AuthController>()),
     );
     r.child(
-      '/signup',
-      child: (_) => SignUpPage(controller: Modular.get<SignUpController>()),
+      '/signup/:email',
+      child: (_) {
+        return SignUpPage(
+          controller: Modular.get<SignUpController>(),
+          user: r.args.data as UserEntity?,
+        );
+      },
     );
   }
 }

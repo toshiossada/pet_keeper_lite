@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
-import '../../../../shared/validators/email_validator.dart';
+import '../../../core/validators/email_validator.dart';
+import '../../../core/domain/entitites/user_entity.dart';
 import 'controllers/signup_controller.dart';
 import 'stores/signup_state.dart';
 
 class SignUpPage extends StatefulWidget {
   final SignUpController controller;
-  const SignUpPage({required this.controller, super.key});
+  final UserEntity? user;
+  const SignUpPage({required this.controller, this.user, super.key});
 
   @override
   State<SignUpPage> createState() => _SignUpPageState();
@@ -24,6 +26,11 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   void initState() {
     super.initState();
+    if (widget.user != null) {
+      _emailCtrl.text = widget.user!.email;
+      _nameCtrl.text = widget.user!.displayName;
+      _familyCtrl.text = widget.user!.familyCode;
+    }
     _controller.store.addListener(() {
       final state = _controller.store.state;
       if (state is SignUpError) {
@@ -91,16 +98,22 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                     TextFormField(
                       controller: _emailCtrl,
+                      readOnly: widget.user != null,
                       keyboardType: TextInputType.emailAddress,
                       decoration: const InputDecoration(labelText: 'Email'),
                       validator: validateEmail,
                     ),
-                    TextFormField(
-                      controller: _passCtrl,
-                      obscureText: true,
-                      decoration: const InputDecoration(labelText: 'Senha'),
-                      validator: (v) =>
-                          (v == null || v.isEmpty) ? 'Informe a senha' : null,
+                    Visibility(
+                      visible: widget.user == null,
+                      child: TextFormField(
+                        controller: _passCtrl,
+                        obscureText: true,
+                        decoration: const InputDecoration(labelText: 'Senha'),
+                        validator: (v) =>
+                            widget.user == null && (v == null || v.isEmpty)
+                            ? 'Informe a senha'
+                            : null,
+                      ),
                     ),
                     const SizedBox(height: 12),
                     ListenableBuilder(

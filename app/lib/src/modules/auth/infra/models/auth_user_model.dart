@@ -1,4 +1,4 @@
-import '../../domain/entities/user_entity.dart';
+import '../../../core/domain/entitites/user_entity.dart';
 
 class AuthUserModel {
   AuthUserModel({
