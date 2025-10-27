@@ -1,4 +1,5 @@
 import 'package:cloud_functions/cloud_functions.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -35,23 +36,27 @@ class _PetDetailsPageState extends State<PetDetailsPage> {
   }
 
   Future<void> _notifyFamily(String message) async {
-    final functions = FirebaseFunctions.instance;
-    final callable = functions.httpsCallable('notifyFamily');
     try {
+      final functions = FirebaseFunctions.instance;
+      final callable = functions.httpsCallable('notifyFamily');
+
       await callable.call(<String, dynamic>{
         'petId': pet.id,
         'message': message,
       });
+
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Notificação enviada à família')),
         );
       }
-    } catch (e) {
+    } catch (e, st) {
+      debugPrint('notifyFamily unknown error: $e');
+      debugPrintStack(stackTrace: st);
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Erro ao notificar: $e')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Erro ao notificar: $e')));
       }
     }
   }
