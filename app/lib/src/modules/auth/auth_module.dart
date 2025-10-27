@@ -34,7 +34,6 @@ class AuthModule extends Module {
 
   @override
   void routes(RouteManager r) {
-    // Define authentication-related routes here
     r.child(
       '/',
       child: (_) => LoginPage(controller: Modular.get<AuthController>()),

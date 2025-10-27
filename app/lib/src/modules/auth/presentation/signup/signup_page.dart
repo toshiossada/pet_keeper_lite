@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/validators/email_validator.dart';
 import '../../../core/domain/entitites/user_entity.dart';
+import '../../../core/validators/email_validator.dart';
 import 'controllers/signup_controller.dart';
 import 'stores/signup_state.dart';
 

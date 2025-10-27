@@ -39,7 +39,7 @@ class AuthController {
       } else {
         appController.store.user = user;
         store.setState(AuthSuccess(user!));
-        Modular.to.navigate('/home');
+        Modular.to.navigate('/pet');
       }
     } catch (e) {
       store.setState(AuthError(e.toString()));

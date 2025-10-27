@@ -31,7 +31,6 @@ class FirebaseAuthDataSource implements AuthDataSource {
       }, SetOptions(merge: true));
     }
 
-    // Read the latest user document (may have been updated above)
     final updated = await docRef.get();
     final data = Map<String, dynamic>.from(updated.data() ?? {});
     data['id'] = user.uid;
@@ -68,7 +67,6 @@ class FirebaseAuthDataSource implements AuthDataSource {
       }, SetOptions(merge: true));
     }
 
-    // Read the latest user document (may have been updated above)
     final updated = await docRef.get();
     final data = Map<String, dynamic>.from(updated.data() ?? {});
     data['id'] = user.uid;
@@ -91,9 +89,6 @@ class FirebaseAuthDataSource implements AuthDataSource {
     AuthUserModel user,
     String password,
   ) async {
-    // If there is already a signed-in user (e.g. via Google Sign-In), do not
-    // create a new Auth user. Instead, create the Firestore document for the
-    // currently signed-in user's uid and return the model.
     final current = _auth.currentUser;
     if (current != null) {
       final userDoc = user.toJson();
@@ -108,7 +103,6 @@ class FirebaseAuthDataSource implements AuthDataSource {
       return AuthUserModel.fromJson(returned);
     }
 
-    // No current user — create a new Auth user with email/password.
     final cred = await _auth.createUserWithEmailAndPassword(
       email: user.email,
       password: password,
