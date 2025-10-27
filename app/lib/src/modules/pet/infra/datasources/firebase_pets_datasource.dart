@@ -10,13 +10,18 @@ class FirebasePetsDataSource {
   final _storage = FirebaseStorage.instance;
 
   Stream<List<PetModel>> watchPets(String? familyCode) {
-    return _col
-        .where('familyCode', isEqualTo: familyCode)
-        .orderBy('createdAt', descending: true)
-        .snapshots()
-        .map(
-          (s) => s.docs.map((d) => PetModel.fromJson(d.id, d.data())).toList(),
-        );
+    Query q = _col;
+    if (familyCode != null && familyCode.isNotEmpty) {
+      q = q.where('familyCode', isEqualTo: familyCode);
+    }
+
+    return q.snapshots().map(
+      (s) => s.docs
+          .map(
+            (d) => PetModel.fromJson(d.id, d.data()! as Map<String, dynamic>),
+          )
+          .toList(),
+    );
   }
 
   Future<PetModel?> getPet(String id) async {

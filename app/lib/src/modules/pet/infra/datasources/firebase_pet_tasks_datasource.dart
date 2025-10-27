@@ -6,9 +6,7 @@ class FirebasePetTasksDataSource {
   final _col = FirebaseFirestore.instance.collection('pet_tasks');
 
   Stream<List<PetTaskModel>> watchTasks(String petId) {
-    final q = _col
-        .where('petId', isEqualTo: petId)
-        .orderBy('createdAt', descending: true);
+    final q = _col.where('petId', isEqualTo: petId);
     return q.snapshots().map(
       (s) => s.docs.map((d) => PetTaskModel.fromJson(d.id, d.data())).toList(),
     );

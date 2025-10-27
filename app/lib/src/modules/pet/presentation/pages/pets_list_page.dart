@@ -55,7 +55,7 @@ class _PetsListPageState extends State<PetsListPage> {
                           fit: BoxFit.cover,
                         )
                       : const SizedBox(width: 56, height: 56),
-                  title: Text(pet.familyCode),
+                  title: Text(pet.name),
                   subtitle: Text('${pet.specie} • ${pet.weightKg} kg'),
                   onTap: () => Modular.to.pushNamed(
                     '/pet/details/${pet.id}',

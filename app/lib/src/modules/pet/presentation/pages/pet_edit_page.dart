@@ -74,7 +74,11 @@ class _PetEditPageState extends State<PetEditPage> {
       createdAt: this.pet?.createdAt,
     );
     if (this.pet == null) {
-      await controller.addPet(pet, imageFile: _imageFile, familyCode: '1');
+      await controller.addPet(
+        pet,
+        imageFile: _imageFile,
+        familyCode: controller.appStore.user!.familyCode,
+      );
     } else {
       await controller.updatePet(pet, imageFile: _imageFile);
     }
