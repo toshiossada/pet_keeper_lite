@@ -9,6 +9,7 @@ import '../../domain/usecases/update_pet_usecase.dart';
 import '../../domain/usecases/upload_image_usecase.dart';
 import '../../domain/usecases/watch_pets_usecase.dart';
 import '../stores/pet_store.dart';
+import 'pet_task_controller.dart';
 
 class PetController {
   final WatchPetsUseCase watchUseCase;
@@ -18,6 +19,7 @@ class PetController {
   final UploadImageUseCase uploadImageUseCase;
   final PetStore store;
   final AppStore appStore;
+  final PetTaskController taskController;
 
   StreamSubscription<List<PetEntity>>? _sub;
 
@@ -28,6 +30,7 @@ class PetController {
     this.deletePetUseCase,
     this.uploadImageUseCase,
     this.store,
+    this.taskController,
     this.appStore,
   );
 
