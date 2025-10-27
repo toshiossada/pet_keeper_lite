@@ -34,7 +34,7 @@ class PetModel extends PetEntity {
         : null,
     weightKg: (json['weightKg'] ?? 0).toDouble(),
     photoUrl: json['photoUrl'] ?? '',
-    familyCode: json['familycode'] ?? '',
+    familyCode: json['familyCode'] ?? '',
     createdAt: json['createdAt'] != null
         ? (json['createdAt'] as Timestamp).toDate()
         : null,

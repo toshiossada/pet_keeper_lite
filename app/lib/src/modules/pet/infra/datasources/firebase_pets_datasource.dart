@@ -10,12 +10,8 @@ class FirebasePetsDataSource {
   final _storage = FirebaseStorage.instance;
 
   Stream<List<PetModel>> watchPets(String? familyCode) {
-    final query = familyCode == null
-        ? _col.orderBy('createdAt', descending: true)
-        : _col
-              .where('familyCode', isEqualTo: familyCode)
-              .orderBy('createdAt', descending: true);
     return _col
+        .where('familyCode', isEqualTo: familyCode)
         .orderBy('createdAt', descending: true)
         .snapshots()
         .map(

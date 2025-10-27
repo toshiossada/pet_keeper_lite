@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 import '../../domain/entities/pet_entity.dart';
 import '../controllers/pet_controller.dart';
@@ -24,7 +25,17 @@ class _PetDetailsPageState extends State<PetDetailsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(pet.name)),
+      appBar: AppBar(
+        title: Text(pet.name),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.event_note),
+            onPressed: () => Modular.to.pushNamed(
+              '/pet/details/${pet.id}/tasks',
+            ),
+          ),
+        ],
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
